@@ -1,0 +1,75 @@
+<div class="row container">
+  <div class="row container mb-2">
+    <div class="col-md-6 col-md-offset-5">
+      <a routerLink="/">Volver</a>
+    </div>
+    <div class="col-md-6 col-md-offset-5">
+      <button class="btn btn-primary" style="float: right;" (click)="open(addContact)" routerLink="contactos">Agregar
+        contacto</button>
+    </div>
+  </div>
+  <br>
+  <div class="col-md-12 mb-3">
+    <!-- <input type="text" class="form-control" placeholder="Buscar" (change)="buscar($event)"> -->
+    <div class="card" *ngFor="let item of listContacts; let i = index">
+      <div class="row">
+        <div class="col-2">
+          <img src="../../../assets/images/face-profile-icon.png"
+            style="border-radius: 60px;margin-top: 0.5em;margin-left: 1em;" width="100" height="100">
+        </div>
+        <div class=" col-6">
+          <p>{{i+1}}</p>
+          <p>{{item.name | titlecase}}</p>
+          <p>{{item.phone}}</p>
+          <p>{{item.dateOfBirth | date}}</p>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-link"><i class="fa fa-edit fa-lg"></i></button>
+          <button class="btn btn-link" (click)="delete(i+1)"><i class="fa fa-trash fa-lg text-danger"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #addContact let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Agregar contacto</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="contactForm">
+      <div class="form-group">
+        <label for="name">Nombre Completo</label>
+        <div class="input-group">
+          <input id="name" class="form-control" formControlName="name" placeholder="Nombre del contacto" name="name">
+        </div>
+        <span *ngIf="!contactForm.get('name').valid && contactForm.get('name').touched" class="text-danger">Este campo
+          es obligatorio
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="phone">Celular</label>
+        <div class="input-group">
+          <input id="phone" class="form-control" formControlName="phone" placeholder="Número de celular" name="phone">
+        </div>
+        <span *ngIf="!contactForm.get('phone').valid && contactForm.get('phone').touched" class="text-danger">Este
+          campo es obligatorio
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Fecha de nacimiento</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" type="date" formControlName="dateOfBirth"
+            placeholder="yyyy-mm-dd" name="dateOfBirth">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning text-white" (click)="close()">Cancelar</button>
+    <button type="button" class="btn btn-primary text-white" [disabled]="contactForm.invalid"
+      (click)="saveContact()">Guardar</button>
+  </div>
+</ng-template>
